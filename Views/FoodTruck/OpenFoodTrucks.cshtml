@@ -5,6 +5,7 @@
 }
 
 <h1>Open Food Trucks</h1>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -15,8 +16,7 @@
         </tr>
     </thead>
 
-
-    <tbody>
+    <tbody id="OpenFoodTruckTable">
         @{int startIndex = Model.CalculateDisplayStartIndex();
             int endIndex = Model.CalculateDisplayEndIndex();}
         @for (int i = startIndex; i < endIndex; ++i)
@@ -31,7 +31,90 @@
     </tbody>
 </table>
 
+<div id="NavigationBar">
+    <ul class="pagination">
+        @for (int i = 0; i < Model.maxPageCounter; i++)
+        {
+            if (i == startIndex)
+            {
+                <li class="page-item active">
+                    <a class="page-link" onclick="RefreshTable((@i+1))" href="#">@(i + 1)</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" onclick="RefreshTable(@(i + 1))" href="#">@(i + 1)</a>
+                </li>
+            }
 
+        }
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+    function CalculateDisplayStartEndIndex(pageIndex,maxFoodTruck)
+    {
+        var startIndex = (pageIndex - 1) * 10;
+        var endIndex = Math.min(10 * pageIndex, maxFoodTruck);
+        return {
+            startIndex: startIndex,
+            endIndex: endIndex,
+        };
+    }
+
+    function RefreshTable(navOptionSelected)
+    {
+        console.log("Refresh Table Called with nav option selected: " + navOptionSelected);
+        var foodTruckObj = @Html.Raw(Json.Serialize(@Model.openFoodTrucks));
+        var indexes = CalculateDisplayStartEndIndex(navOptionSelected, foodTruckObj.length);
+        var startIndex = indexes.startIndex;
+        var endIndex = indexes.endIndex;
+        console.log(foodTruckObj[0].location);
+
+        var html = '';
+        html += `<tbody>`;
+
+        for (var i = startIndex; i < endIndex; i++)
+        {
+            html += `<tr>`;
+            html += `<th>` + foodTruckObj[i].applicant + `</th>`;
+            html += `<td>` + foodTruckObj[i].location + `</td>`;
+            html += `<td>` + foodTruckObj[i].start24 + `</td>`;
+            html += `<td>` + foodTruckObj[i].end24 + `</td>`;
+            html += `</tr>`;
+        }
+        html += `</tbody>`;
+        document.getElementById("OpenFoodTruckTable").innerHTML = html;
+
+        RenderNavBar(navOptionSelected, foodTruckObj.length);
+    }
+
+    function RenderNavBar(navOptionSelected, maxFoodTruck)
+    {
+        var maxIndex = Math.ceil(maxFoodTruck / 10);
+        var html = '';
+        html += `<ul class="pagination">`;
+        for (var i = 0; i < maxIndex; i++)
+        {
+            if (i == (navOptionSelected-1))
+            {
+                html += `<li class="page-item active">`;
+            }
+            else
+            {
+                html += `<li class="page-item">`
+            }
+
+            html += `<a class="page-link" onclick="RefreshTable(`+(i+1)+`)" href="#">` + (i + 1) + `</a>`;
+            html += `</li>`;
+        }
+        html += `</ul>`
+        document.getElementById("NavigationBar").innerHTML = html;
+
+    }
+</script>
 
 
 
