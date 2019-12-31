@@ -1,0 +1,37 @@
+﻿@model FoodTruckFinderWebApp.ViewModel.FoodTruckViewModel
+@{
+    ViewData["Title"] = "OpenFoodTrucks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Open Food Trucks</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Open Time</th>
+            <th scope="col">Close Time</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @{int startIndex = Model.CalculateDisplayStartIndex();
+            int endIndex = Model.CalculateDisplayEndIndex();}
+        @for (int i = startIndex; i < endIndex; ++i)
+        {
+            <tr>
+                <th scope="row">@Model.openFoodTrucks[i].Applicant</th>
+                <td>@Model.openFoodTrucks[i].Location</td>
+                <td>@Model.openFoodTrucks[i].Start24</td>
+                <td>@Model.openFoodTrucks[i].End24</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
