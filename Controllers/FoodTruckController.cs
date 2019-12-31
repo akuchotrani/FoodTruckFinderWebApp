@@ -12,8 +12,13 @@ namespace FoodTruckFinderWebApp.Controllers
     {
         public IActionResult OpenFoodTrucks()
         {
+
             int currentSystemDayIndex = (int)System.DateTime.Now.DayOfWeek;
             string currentSystemTime = DateTime.Now.ToString("HH:mm", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+
+            //To Do: Cheat function to convert webserver time to UTC-8. Fix this.
+            currentSystemTime = UtilityHelpers.ConvertToUtcMinus8(currentSystemTime);
+
             string url = "https://data.sfgov.org/resource/jjew-r69b.json";
 
             ApiHelper.InitializeClient();
@@ -25,7 +30,8 @@ namespace FoodTruckFinderWebApp.Controllers
                 allFoodTrucks = allFoodTrucks,
                 openFoodTrucks = openFoodTrucks,
                 currentPageCounter = 1,
-                maxPageCounter = maxPageCounter
+                maxPageCounter = maxPageCounter,
+                currentSystemTime = currentSystemTime
             };
 
             return View(foodTruckViewModel);

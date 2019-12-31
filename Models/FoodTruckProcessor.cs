@@ -42,6 +42,7 @@ namespace FoodTruckFinderWebApp.Models
             if (currentSystemDayIndex != foodTruck.DayOrder)
                 return false;
 
+
             int systemTimeInMinutes = UtilityHelpers.ConvertToMinutes(currentSystemTime);
             int foodTruckStartTimeMinutes = UtilityHelpers.ConvertToMinutes(foodTruck.Start24);
             int foodTruckEndTimeMinutes = UtilityHelpers.ConvertToMinutes(foodTruck.End24);

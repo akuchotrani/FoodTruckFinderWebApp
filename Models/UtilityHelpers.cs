@@ -17,5 +17,21 @@ namespace FoodTruckFinderWebApp.Models
             var Parts = Time.Split(':');
             return Int32.Parse(Parts[0]) * 60 + Int32.Parse(Parts[1]);
         }
+
+        /// <summary>
+        /// Helper function to convert time to utc-8
+        /// </summary>
+        /// <param name="currentSystemTime"></param>
+        /// <returns></returns>
+        public static string ConvertToUtcMinus8(string currentSystemTime)
+        {
+            string result = "";
+            var parts = currentSystemTime.Split(':');
+            int hr = int.Parse(parts[0]);
+            string minutes = parts[1];
+            hr = (hr - 8) >= 0 ? (hr - 8) : 24 + (hr - 8);
+            result = hr.ToString() + ":" + minutes;
+            return result;
+        }
     }
 }

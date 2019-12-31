@@ -13,6 +13,7 @@ namespace FoodTruckFinderWebApp.ViewModel
         public List<FoodTruckModel> openFoodTrucks { get; set; }
         public int currentPageCounter { get; set; }
         public int maxPageCounter { get; set; }
+        public string currentSystemTime { get; set; }
 
         public int CalculateDisplayStartIndex()
         {
